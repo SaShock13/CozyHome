@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 public class TabButtonView : MonoBehaviour
 {  
-
     [SerializeField] private Button button;
     [SerializeField] private GameObject activeIndicator;
 

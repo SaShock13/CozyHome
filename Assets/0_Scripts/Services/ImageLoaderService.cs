@@ -34,9 +34,6 @@ public class ImageLoaderService : MonoBehaviour
     // Асинхронная версия с колбэком
     public static IEnumerator LoadResourceAsync(string name, Action<Texture> onLoaded)
     {
-        Debug.Log($"Try async load: '{name}'");
-               
-
         // Асинхронная загрузка
         ResourceRequest request = Resources.LoadAsync<Texture>(name);
         yield return request;
@@ -44,7 +41,6 @@ public class ImageLoaderService : MonoBehaviour
         if (request.asset != null)
         {
             Texture texture = request.asset as Texture;
-            Debug.Log($"Success: '{texture.name}'");
             onLoaded?.Invoke(texture);
         }
         else

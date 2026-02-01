@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -46,9 +45,6 @@ public class GalleryClickHandler : MonoBehaviour,IPointerClickHandler
 
     private void OnGalleryItemClicked(GalleryItemView clickedView)
     {
-        if (clickedView.BoundData.IsPremium) Debug.Log($"{clickedView.Name} IS PREMIUM IMAGE");
-        else Debug.Log($"{clickedView.Name} regular image ");
         onImageClicked.Invoke(clickedView);
-
     }
 }

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class ViewportSwipeDetector : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
@@ -6,8 +7,9 @@ public class ViewportSwipeDetector : MonoBehaviour, IPointerDownHandler, IPointe
     [SerializeField] private RectTransform viewport;
     [SerializeField] private float minSwipeDistance = 10;
 
-    public System.Action onSwipeLeft;
-    public System.Action onSwipeRight;
+    public Action onSwipeLeft;
+    public Action onSwipeRight;
+
 
     private Vector2 startPos;
     private bool isSwiping = false;
@@ -32,7 +34,6 @@ public class ViewportSwipeDetector : MonoBehaviour, IPointerDownHandler, IPointe
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        Debug.Log($"OnPointerUp {this}");
         if (!isSwiping) return;
 
         // Проверяем что отпускание внутри Viewport

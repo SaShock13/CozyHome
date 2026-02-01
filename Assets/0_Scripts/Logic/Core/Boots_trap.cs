@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
 
-public class Bootstrap : MonoBehaviour
+public class Bootstrap : MonoBehaviour // На всякий случай  
 {
     [SerializeField] private TabsController tabsController;
     [SerializeField] private GalleryController galleryController;
-    [SerializeField] private CarouselController carouselController;
 
     private void Start()
     {

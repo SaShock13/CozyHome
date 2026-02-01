@@ -31,8 +31,7 @@ public class GalleryController : MonoBehaviour
 
         if (premium)
         {
-            premiumPopup.SetActive(true);
-            
+            premiumPopup.SetActive(true);            
             regularPopup.SetActive(false);
         }
         else
@@ -44,9 +43,7 @@ public class GalleryController : MonoBehaviour
             {
                 popupView.SetData(view.BoundData.LocalName, view.Name);
             }
-
         }
-
     }
 
     public void SetFilter(GalleryFilterType filter)

@@ -4,10 +4,11 @@ using UnityEngine.UI;
 
 public class VirtualizedGridGallery : MonoBehaviour
 {
+
+
     [SerializeField] private ScrollRect scrollRect;
     [SerializeField] private RectTransform content;
     [SerializeField] private GalleryItemView itemPrefab;
-
 
     [SerializeField] private float planchetMinWidth = 1400f; // минимальная ширина экран для опознания планшета
     [SerializeField] private float spacing = 20f;
@@ -18,13 +19,16 @@ public class VirtualizedGridGallery : MonoBehaviour
 
     private GalleryDataSource _dataSource;
     private readonly List<GalleryItemView> _views = new();
-
     private int _columns;
     private float _itemWidth;
     private float _itemHeight;
     private int _lastFirstRow = -1;
     private float _scrollThreshold = 2;  // порог срабатыватия скролла от колебаний
     private Vector2 _lastScrollPos = Vector2.zero;
+
+
+    float diagonalInches = 0;
+    float dpi = 0;
 
     public void Initialize(GalleryDataSource dataSource)
     {
@@ -40,15 +44,22 @@ public class VirtualizedGridGallery : MonoBehaviour
 
     private void CalculateLayout()
     {
-        float viewportWidth = scrollRect.viewport.rect.width;
+        bool isTablet = false;
+        float viewportWidth = 0;       
 
-        _columns = viewportWidth > planchetMinWidth ? 3 : 2; // Определяем количество колонок в зависимости от шиирины экрана . todo Как еще определить планшет?
+        isTablet = DeviceInformationService.IsTablet(out diagonalInches, out dpi); // Планшет или нет?
 
+        if(diagonalInches == 0 ) // Fallback вариант , если по диагонали не сработало.
+        {
+            viewportWidth = scrollRect.viewport.rect.width;
+            isTablet = viewportWidth > planchetMinWidth;
+        }
+
+        _columns = isTablet ? 3 : 2; // Определяем количество колонок 
         float padding = _columns == 3 ? planchetPadding : smartphonePadding;
 
         scrollRect.viewport.offsetMin = new Vector2(60, padding);    //Выставляем паддинги  Left, Bottom
         scrollRect.viewport.offsetMax = new Vector2(-60, -160);    //Выставляем паддинги   -Right, -Top
-        //spacing = padding;
 
         viewportWidth = scrollRect.viewport.rect.width -20 ; // пересчитываем ширину с новыми паддингами
 
@@ -120,16 +131,19 @@ public class VirtualizedGridGallery : MonoBehaviour
             view.RectTransform.anchoredPosition = new Vector2(col * (_itemWidth + spacing), -row * (_itemHeight + spacing));
 
             if (force || view.BoundIndex != dataIndex)
+            {
                 view.Bind(_dataSource.Items[dataIndex], dataIndex);
+            }
+
         }
     }
 
     public void Refresh()
     {
         _lastFirstRow = -1;
+        scrollRect.StopMovement();
         content.anchoredPosition = Vector2.zero;
         foreach (var view in _views) view.Unbind();
-        //CalculateLayout();
         ResizeContent();
         UpdateVisibleItems(true);
     }

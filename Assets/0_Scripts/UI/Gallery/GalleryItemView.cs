@@ -13,6 +13,9 @@ public class GalleryItemView : MonoBehaviour
     [SerializeField] private GameObject premiumBadge;
     [SerializeField] private TMP_Text nameText;
 
+
+    [SerializeField] private bool showName = false;
+
     public string Name { get; set; }
 
     public int BoundIndex { get; private set; } = -1;
@@ -22,13 +25,15 @@ public class GalleryItemView : MonoBehaviour
 
     public RectTransform RectTransform => (RectTransform)transform;
 
+
     public void Bind(ImageItemData data, int index)
     {
         BoundIndex = index;
         BoundData = data;
         Name = $"Изображение {data.Id}";
         if (premiumBadge != null) premiumBadge.SetActive(data.IsPremium);
-        if (nameText != null) nameText.text = Name;
+        if (showName && nameText != null) nameText.text = Name;
+        
 
         if (data.Texture != null)
         {
@@ -37,8 +42,6 @@ public class GalleryItemView : MonoBehaviour
         else
         {
             image.texture = null;
-
-            //image.texture = ImageLoaderService.LoadResource(data.LocalName);
             if (loadingCoroutine != null) StopCoroutine(loadingCoroutine);
             loadingCoroutine = StartCoroutine(LoadImageAsync(data));
         }
