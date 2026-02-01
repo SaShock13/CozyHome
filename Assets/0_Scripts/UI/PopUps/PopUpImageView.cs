@@ -9,20 +9,13 @@ public class PopUpImageView : MonoBehaviour
     [SerializeField] TMP_Text text;
     private RectTransform rectTransform;
 
-    public void Show(Texture2D texture)
-    {
-    }
-
-    public void Hide()
-    {
-    }
-
     public void SetData(string localName,string imageName)
     {
         image.texture = ImageLoaderService.LoadResource(localName);
         rectTransform = image.GetComponent<RectTransform>();
         AdjustHeightToTextureAspect();
         text.text = imageName;
+
     }
     void AdjustHeightToTextureAspect()
     {

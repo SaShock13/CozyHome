@@ -8,6 +8,8 @@ public class GalleryController : MonoBehaviour
     [SerializeField] private GalleryClickHandler clickHandler;
     [SerializeField] private GameObject regularPopup;
     [SerializeField] private GameObject premiumPopup;
+    [SerializeField] private PopupAnimation regularPopupAnimated;
+    [SerializeField] private PopupAnimation premiumPopupAnimated;
 
     private GalleryDataSource _dataSource;
 
@@ -31,18 +33,20 @@ public class GalleryController : MonoBehaviour
 
         if (premium)
         {
-            premiumPopup.SetActive(true);            
-            regularPopup.SetActive(false);
+            premiumPopupAnimated.Show();
+            //premiumPopup.SetActive(true);            
+            //regularPopup.SetActive(false);
         }
         else
         {
-            regularPopup.SetActive(true);
-            premiumPopup.SetActive(false);
-            var popupView = regularPopup.GetComponent<PopUpImageView>();
+            //regularPopup.SetActive(true);
+            //premiumPopup.SetActive(false);
+            var popupView = regularPopupAnimated.GetComponentInChildren<PopUpImageView>();
             if(popupView != null)
             {
                 popupView.SetData(view.BoundData.LocalName, view.Name);
             }
+            regularPopupAnimated.Show();
         }
     }
 
