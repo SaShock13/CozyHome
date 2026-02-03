@@ -1,17 +1,38 @@
 ﻿using System;
 using System.Collections;
-using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class ImageLoaderService : MonoBehaviour
+public  class ImageLoaderService : MonoBehaviour
 {
-    // Асинхронная загрузка по URL
-    public static IEnumerator Load(string url, Action<Texture> onLoaded)
+
+    static string testUrl = "https://muzrock.com/wp-content/uploads/2018/02/metal.png";
+
+    // Асинхронно по url
+
+    //public static IEnumerator LoadFromNet(string url, Action<Texture> onLoaded)
+    //{
+
+    //    //Debug.Log($"Try to Load from Url {url}");
+    //    using var req = UnityWebRequestTexture.GetTexture(testUrl);
+    //    yield return req.SendWebRequest();
+
+    //    Debug.Log($"Request is  {req.result}");
+    //    if (req.result == UnityWebRequest.Result.Success)
+    //        onLoaded?.Invoke(DownloadHandlerTexture.GetContent(req));
+    //    else
+    //        onLoaded?.Invoke(null);
+    //}
+
+
+    public static IEnumerator LoadFromNet(string url, Action<Texture> onLoaded)
     {
+
+        Debug.Log($"Try to Load from Url {url}");
         using var req = UnityWebRequestTexture.GetTexture(url);
         yield return req.SendWebRequest();
 
+        Debug.Log($"Request is  {req.result}");
         if (req.result == UnityWebRequest.Result.Success)
             onLoaded?.Invoke(DownloadHandlerTexture.GetContent(req));
         else
@@ -19,7 +40,7 @@ public class ImageLoaderService : MonoBehaviour
     }
 
     // Синхронно
-    public static Texture LoadResource(string name)
+    public Texture LoadResource(string name)
     {
         var tex = Resources.Load<Texture>(name);
 
@@ -31,8 +52,8 @@ public class ImageLoaderService : MonoBehaviour
         return tex;
     }
 
-    // Асинхронная версия с колбэком
-    public static IEnumerator LoadResourceAsync(string name, Action<Texture> onLoaded)
+    // Асинхронно
+    public IEnumerator LoadResourceAsync(string name, Action<Texture> onLoaded)
     {
         // Асинхронная загрузка
         ResourceRequest request = Resources.LoadAsync<Texture>(name);

@@ -13,6 +13,8 @@ public class GalleryItemView : MonoBehaviour
     [SerializeField] private GameObject premiumBadge;
     [SerializeField] private TMP_Text nameText;
 
+    [SerializeField] private ImageLoaderService loader;
+
 
     [SerializeField] private bool showName = false;
 
@@ -51,13 +53,14 @@ public class GalleryItemView : MonoBehaviour
 
     private IEnumerator LoadImageAsync(ImageItemData data)
     {
-        yield return ImageLoaderService.LoadResourceAsync(data.LocalName, tex =>
+        yield return ImageLoaderService.LoadFromNet(data.ImageUrl, tex =>
         {
             if (tex != null)
             {
                 data.Texture = tex;
                 image.texture = tex;
             }
+            else Debug.Log($"Can not load texture from  {data.ImageUrl}");
         });
 
         loadingCoroutine = null;
@@ -81,4 +84,8 @@ public class GalleryItemView : MonoBehaviour
         OnClick?.Invoke(BoundData);
     }
 
+    private void OnDisable()
+    {
+        //Debug.Log($"GalleryItemView DISABLED: {name}");
+    }
 }

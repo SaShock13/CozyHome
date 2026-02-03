@@ -13,14 +13,15 @@ public class GalleryController : MonoBehaviour
 
     private GalleryDataSource _dataSource;
 
+    private const string baseUrl = "http://data.ikppbb.com/test-task-unity-data/pics/";
+
     private void Start()
     {
-        // Генерируем тестовые данные
         List<ImageItemData> items = new List<ImageItemData>();
-        for (int i = 1; i <= 40; i++)
+        for (int i = 1; i <= 66; i++)
 
 
-            items.Add(new ImageItemData(i, $"http://data.ikppbb.com/test-task-unity-data/pics/{i}.jpg", i.ToString()));
+            items.Add(new ImageItemData(i, $"{baseUrl}/{i}.jpg", i.ToString()));
 
         _dataSource = new GalleryDataSource(items);
         gallery.Initialize(_dataSource);
@@ -34,19 +35,15 @@ public class GalleryController : MonoBehaviour
         if (premium)
         {
             premiumPopupAnimated.Show();
-            //premiumPopup.SetActive(true);            
-            //regularPopup.SetActive(false);
         }
         else
         {
-            //regularPopup.SetActive(true);
-            //premiumPopup.SetActive(false);
             var popupView = regularPopupAnimated.GetComponentInChildren<PopUpImageView>();
             if(popupView != null)
             {
-                popupView.SetData(view.BoundData.LocalName, view.Name);
+                regularPopupAnimated.Show();
+                popupView.Bind(view.BoundData, view.Name);
             }
-            regularPopupAnimated.Show();
         }
     }
 
